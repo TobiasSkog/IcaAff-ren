@@ -25,7 +25,7 @@ internal class DatabaseManager
             WHERE PersonalId = 7
        */
 
-
+        throw new NotImplementedException();
     }
 
 
@@ -47,6 +47,7 @@ internal class DatabaseManager
         INNER JOIN Personal ON FK_PersonalId = PersonalId)
     WHERE AvdelningsId = 2
     */
+        throw new NotImplementedException();
     }
 
 
@@ -59,6 +60,7 @@ internal class DatabaseManager
         INNER JOIN Personal ON FK_PersonalId = PersonalId)
         INNER JOIN Roll ON FK_RollId = RollId), Butik
     */
+        throw new NotImplementedException();
     }
 
 }
