@@ -1,4 +1,5 @@
 ﻿using IcaAffären.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace IcaAffären.Application.Data;
 
@@ -24,12 +25,25 @@ internal class DatabaseManager
             INNER JOIN Avdelning ON FK_AvdelningId = AvdelningsId)
             WHERE PersonalId = 7
        */
+        var personalAvdelningar = Context.PersonalAvdelningars
+            .Include(pa => pa.FkPersonal)
+            .Include(pa => pa.FkAvdelning)
+            .ToList();
 
-        throw new NotImplementedException();
+        foreach (var singularpersonalavdelning in personalAvdelningar)
+        {
+            Console.WriteLine("Personal Information:");
+            Console.WriteLine($"\tNamn: {singularpersonalavdelning.FkPersonal.PersonalNamn}\n\tAvdelning: {singularpersonalavdelning.FkAvdelning.AvdelningsNamn}");
+        }
+        Console.WriteLine("\nTryck valfri tangent för att gå tillbaka...");
+        Console.ReadKey();
+        Console.Clear();
+        return personalAvdelningar;
     }
 
 
 
+    public List<string> GetAllAvdelningsNamn() => [.. Context.Avdelnings.Select(avdelning => avdelning.AvdelningsNamn)];
 
     public List<Personal> GetAllPersonalOnAvdelning(string avdelning)
     {
@@ -47,6 +61,22 @@ internal class DatabaseManager
         INNER JOIN Personal ON FK_PersonalId = PersonalId)
     WHERE AvdelningsId = 2
     */
+
+        var personal = Context.PersonalAvdelningars
+            .Include(pa => pa.FkPersonal)
+            .Include(pa => pa.FkAvdelning)
+            .Where(pa => pa.FkAvdelning.AvdelningsNamn == avdelning)
+            .ToList();
+
+        Console.WriteLine("Avdelning: " + avdelning);
+        foreach (var p in personal)
+        {
+            Console.WriteLine($"{p.FkPersonal.PersonalNamn}");
+        }
+
+
+        Console.WriteLine("Tryck valfri tangent för att gå tillbaka...");
+        Console.ReadKey();
         throw new NotImplementedException();
     }
 
